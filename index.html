@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Catcher in the Rye — Photography Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Special+Elite&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080807;
+    --ink: #0f0e0c;
+    --paper: #e8dfc8;
+    --aged: #c9b99a;
+    --red: #8b1a1a;
+    --red-bright: #c0392b;
+    --smoke: rgba(232,223,200,0.07);
+    --fade: rgba(8,8,7,0.85);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--paper);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--paper);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(232,223,200,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.25s ease, width 0.3s ease, height 0.3s ease;
+  }
+  body:hover .cursor { opacity:1; }
+
+  /* FILM GRAIN */
+  .grain {
+    position: fixed;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 9997;
+    animation: grain-shift 0.15s steps(2) infinite;
+  }
+  @keyframes grain-shift {
+    0% { transform: translate(0,0); }
+    25% { transform: translate(-2%,-3%); }
+    50% { transform: translate(1%,2%); }
+    75% { transform: translate(3%,-1%); }
+    100% { transform: translate(-1%,3%); }
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 60% at 50% 50%, rgba(139,26,26,0.12) 0%, transparent 70%),
+      var(--black);
+  }
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 49px,
+      rgba(232,223,200,0.03) 50px
+    );
+  }
+  .hero-number {
+    font-family: 'Special Elite', cursive;
+    font-size: clamp(120px, 25vw, 300px);
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,223,200,0.06);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    letter-spacing: -0.05em;
+    user-select: none;
+    z-index: 0;
+    animation: hero-num-in 2s ease forwards;
+    opacity: 0;
+  }
+  @keyframes hero-num-in {
+    from { opacity:0; transform: translate(-50%,-50%) scale(0.9); }
+    to { opacity:1; transform: translate(-50%,-50%) scale(1); }
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+  }
+  .hero-eyebrow {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--red-bright);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fade-up 0.8s 0.5s ease forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 110px);
+    font-weight: 900;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    opacity: 0;
+    animation: fade-up 1s 0.8s ease forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--aged);
+    display: block;
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 300;
+    font-style: italic;
+    color: rgba(232,223,200,0.55);
+    margin-top: 1.5rem;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fade-up 0.8s 1.2s ease forwards;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fade-in 1s 2s ease forwards;
+    z-index: 3;
+  }
+  .hero-scroll span {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: rgba(232,223,200,0.35);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(232,223,200,0.4), transparent);
+    animation: scroll-line 1.5s ease-in-out infinite;
+  }
+  @keyframes scroll-line {
+    0%, 100% { transform: scaleY(0); transform-origin: top; }
+    40% { transform: scaleY(1); transform-origin: top; }
+    60% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: normal;
+    pointer-events: none;
+  }
+  .nav-logo {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: rgba(232,223,200,0.5);
+    text-transform: uppercase;
+    pointer-events: auto;
+    transition: color 0.3s;
+  }
+  .nav-logo:hover { color: var(--paper); }
+  .nav-year {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: rgba(232,223,200,0.3);
+    pointer-events: auto;
+  }
+
+  /* INTRO */
+  .intro {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 8rem 2rem 6rem;
+    text-align: center;
+  }
+  .intro p {
+    font-size: clamp(18px, 2.2vw, 26px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.75;
+    color: var(--aged);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .intro p.visible { opacity:1; transform: translateY(0); }
+
+  /* DIVIDER */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 3rem;
+    margin: 2rem 0;
+  }
+  .divider-line { flex: 1; height:1px; background: rgba(232,223,200,0.1); }
+  .divider-symbol {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--red);
+    font-style: italic;
+  }
+
+  /* SYMBOL SECTIONS */
+  .symbol-section {
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 58% 42%;
+    overflow: hidden;
+  }
+  .symbol-section:nth-child(even) { direction: rtl; }
+  .symbol-section:nth-child(even) > * { direction: ltr; }
+
+  .symbol-photo {
+    position: relative;
+    overflow: hidden;
+  }
+  .symbol-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%) contrast(1.05);
+    transition: transform 1.5s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.8s ease;
+    transform: scale(1.05);
+  }
+  .symbol-section:hover .symbol-photo img {
+    transform: scale(1.0);
+    filter: grayscale(0%) contrast(1.1);
+  }
+  .photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(8,8,7,0.3) 0%, transparent 60%);
+    transition: opacity 0.5s;
+  }
+  .photo-number {
+    position: absolute;
+    top: 2rem; left: 2rem;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(60px, 8vw, 120px);
+    font-weight: 900;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,223,200,0.2);
+    line-height: 1;
+    z-index: 2;
+    transition: -webkit-text-stroke 0.5s;
+  }
+  .symbol-section:hover .photo-number {
+    -webkit-text-stroke: 1px rgba(232,223,200,0.5);
+  }
+
+
+  .photo-caption {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 0.85rem 1.5rem;
+    background: rgba(8,8,7,0.72);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3;
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+    backdrop-filter: blur(4px);
+  }
+  .symbol-section:hover .photo-caption { transform: translateY(0); }
+  .photo-caption-left {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    color: rgba(232,223,200,0.5);
+    text-transform: uppercase;
+  }
+  .photo-caption-right {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: rgba(232,223,200,0.35);
+  }
+  .symbol-tag {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--red-bright);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .symbol-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5rem 4rem;
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+  }
+  .symbol-content::before {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--red) 40%, var(--red) 60%, transparent);
+    opacity: 0;
+    transition: opacity 0.6s 0.3s;
+  }
+  .symbol-section:hover .symbol-content::before { opacity: 1; }
+
+  .symbol-tag {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    color: var(--red-bright);
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .symbol-tag::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 1px;
+    background: var(--red-bright);
+    flex-shrink: 0;
+  }
+  .tag-of {
+    color: rgba(232,223,200,0.3);
+    letter-spacing: 0.2em;
+  }
+  .symbol-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 56px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s 0.1s ease, transform 0.6s 0.1s ease;
+  }
+  .symbol-quote {
+    position: relative;
+    padding: 1.5rem 0 1.5rem 1.5rem;
+    margin-bottom: 1.8rem;
+    border-left: 2px solid var(--red);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s 0.2s ease, transform 0.6s 0.2s ease;
+  }
+  .symbol-quote p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(15px, 1.5vw, 19px);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--aged);
+  }
+  .symbol-quote cite {
+    display: block;
+    margin-top: 0.75rem;
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(232,223,200,0.3);
+    font-style: normal;
+  }
+  .symbol-analysis {
+    font-size: clamp(14px, 1.3vw, 17px);
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(232,223,200,0.6);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s 0.3s ease, transform 0.6s 0.3s ease;
+  }
+
+  .visible-section .symbol-tag,
+  .visible-section .symbol-title,
+  .visible-section .symbol-quote,
+  .visible-section .symbol-analysis {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  /* FULL-WIDTH PHOTO BREAK */
+  .photo-break {
+    position: relative;
+    height: 70vh;
+    overflow: hidden;
+  }
+  .photo-break img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(30%) contrast(1.1);
+    transition: transform 8s ease;
+  }
+  .photo-break:hover img { transform: scale(1.04); }
+  .photo-break-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      var(--black) 0%,
+      transparent 20%,
+      transparent 80%,
+      var(--black) 100%
+    );
+  }
+  .photo-break-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+  }
+  .photo-break-text blockquote {
+    max-width: 800px;
+    padding: 0 3rem;
+    text-align: center;
+  }
+  .photo-break-text blockquote p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3vw, 40px);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--paper);
+    text-shadow: 0 2px 20px rgba(8,8,7,0.9);
+  }
+
+  /* GRID SECTION */
+  .grid-section {
+    padding: 8rem 3rem;
+    background: var(--ink);
+  }
+  .grid-section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .grid-section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+  }
+  .grid-section-header p {
+    font-size: clamp(14px, 1.3vw, 17px);
+    font-style: italic;
+    color: var(--aged);
+    margin-top: 1rem;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 300px 300px;
+    gap: 4px;
+  }
+  .grid-item {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .grid-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .grid-item:nth-child(4) { grid-column: span 2; }
+  .grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
+    filter: grayscale(15%);
+  }
+  .grid-item:hover img {
+    transform: scale(1.08);
+    filter: grayscale(0%);
+  }
+  .grid-item-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8,8,7,0.6);
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .grid-item:hover .grid-item-overlay { opacity: 1; }
+  .grid-item-overlay h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(16px, 2vw, 24px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--paper);
+    margin-bottom: 0.5rem;
+    transform: translateY(10px);
+    transition: transform 0.4s 0.1s ease;
+  }
+  .grid-item:hover .grid-item-overlay h3 { transform: translateY(0); }
+  .grid-item-overlay p { font-family:"Special Elite",cursive; letter-spacing:0.3em; font-size:0.6rem; text-transform:uppercase; color:var(--aged);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--aged);
+    text-transform: uppercase;
+    font-family: 'Special Elite', cursive;
+    transform: translateY(10px);
+    transition: transform 0.4s 0.2s ease;
+  }
+  .grid-item:hover .grid-item-overlay p { font-family:"Special Elite",cursive; letter-spacing:0.3em; font-size:0.6rem; text-transform:uppercase; color:var(--aged); transform: translateY(0); }
+
+  /* LIGHTBOX */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    background: rgba(8,8,7,0.97);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .lightbox.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .lightbox-inner {
+    max-width: 90vw;
+    max-height: 90vh;
+    position: relative;
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+    transform: scale(0.95);
+    transition: transform 0.5s ease;
+  }
+  .lightbox.active .lightbox-inner { transform: scale(1); }
+  .lightbox img {
+    max-height: 85vh;
+    max-width: 55vw;
+    object-fit: contain;
+    box-shadow: 0 40px 120px rgba(0,0,0,0.8);
+  }
+  .lightbox-info {
+    max-width: 380px;
+    padding: 2rem 0;
+  }
+  .lightbox-tag {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.45em;
+    color: var(--red-bright);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .lightbox-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 900;
+    color: var(--paper);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+  .lightbox-quote {
+    border-left: 2px solid var(--red);
+    padding-left: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .lightbox-quote p {
+    font-style: italic;
+    font-size: 16px;
+    color: var(--aged);
+    line-height: 1.65;
+  }
+  .lightbox-analysis {
+    font-size: 14px;
+    color: rgba(232,223,200,0.55);
+    line-height: 1.8;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 2rem; right: 2.5rem;
+    background: none;
+    border: 1px solid rgba(232,223,200,0.2);
+    color: var(--paper);
+    font-family: 'Special Elite', cursive;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    padding: 0.6rem 1.2rem;
+    cursor: none;
+    transition: border-color 0.3s, color 0.3s;
+    text-transform: uppercase;
+  }
+  .lightbox-close:hover {
+    border-color: var(--red);
+    color: var(--red-bright);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 6rem 3rem 4rem;
+    text-align: center;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .footer-bg-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(60px, 15vw, 200px);
+    font-weight: 900;
+    font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(232,223,200,0.04);
+    position: absolute;
+    bottom: -1rem; left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    user-select: none;
+  }
+  .footer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(14px, 1.5vw, 18px);
+    font-style: italic;
+    color: var(--aged);
+    margin-bottom: 1rem;
+  }
+  .footer-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 3.5vw, 48px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--paper);
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    line-height: 1.4;
+  }
+  .footer-hr {
+    width: 60px;
+    height: 1px;
+    background: var(--red);
+    margin: 2rem auto;
+  }
+  .footer-credit {
+    font-family: 'Special Elite', cursive;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: rgba(232,223,200,0.2);
+    text-transform: uppercase;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fade-up {
+    from { opacity:0; transform: translateY(30px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity:0; }
+    to { opacity:1; }
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--red), var(--red-bright));
+    z-index: 9999;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* SECTION MARKER */
+  .section-marker {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 100;
+  }
+  .section-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(232,223,200,0.2);
+    cursor: none;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .section-dot.active {
+    background: var(--red-bright);
+    transform: scale(1.5);
+  }
+
+  /* HOVER RED TINT ON IMAGES */
+  .symbol-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(139,26,26,0);
+    transition: background 0.6s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .symbol-section:hover .symbol-photo::after {
+    background: rgba(139,26,26,0.08);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .symbol-section {
+      grid-template-columns: 1fr;
+      grid-template-rows: 50vh auto;
+    }
+    .symbol-section:nth-child(even) { direction: ltr; }
+    .symbol-content { padding: 3rem 2rem; }
+    .photo-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .grid-item:nth-child(1) { grid-column: span 2; }
+    .grid-item:nth-child(4) { grid-column: span 1; }
+    .lightbox-inner { flex-direction: column; max-width: 95vw; }
+    .lightbox img { max-width: 90vw; max-height: 50vh; }
+    .lightbox-info { max-width: 90vw; }
+    nav { padding: 1rem 1.5rem; }
+    .section-marker { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav>
+  <div class="nav-logo">Photography Portfolio</div>
+  <div class="nav-year">J.D. Salinger · 1951</div>
+</nav>
+
+<!-- SIDE DOTS -->
+<div class="section-marker" id="sectionMarker">
+  <div class="section-dot active"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+  <div class="section-dot"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="section-0">
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-number">1951</div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Photography Portfolio</div>
+    <h1 class="hero-title">
+      The Catcher<br>
+      <em>in the Rye</em>
+    </h1>
+    <p class="hero-sub">Eight pictures. One fractured adolescence.</p>
+  </div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- INTRO -->
+<div class="intro" id="section-1">
+  <p>"What I was really hanging around for, I was trying to feel some kind of a good-by. I don't care if it's a sad good-by or a bad good-by, but when I leave a place I like to know I'm leaving it."</p>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-symbol">§</div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- 1. PHONIES -->
+<section class="symbol-section" id="section-2">
+  <div class="symbol-photo">
+    <div class="photo-number">01</div>
+    <img src="photos/PHONIES.jpg" alt="Phonies">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Phonies · 35mm · J.D. Salinger</span>
+      <span class="photo-caption-right">Paul-Desmarais, Ottawa</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 01 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Phonies</h2>
+    <div class="symbol-quote">
+      <p>"There's a word I really hate. It's a phony. I could puke every time I hear it."</p>
+      <cite>— Page 9</cite>
+    </div>
+    <p class="symbol-analysis">Holden's constantly judging people for being phony, but he's doing the same thing himself—lying and pretending all the time. His whole obsession with phoniness comes from his own insecurity and his fear of genuine connection. He wants everything to be real, but he can't handle how messy and disappointing actual people are. That's why he hates phonies so much.</p>
+  </div>
+</section>
+
+<!-- 2. RECORD -->
+<section class="symbol-section" id="section-3">
+  <div class="symbol-photo">
+    <div class="photo-number">02</div>
+    <img src="photos/RECORD_FOR__PHOEBE.jpg" alt="Record for Phoebe">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Record for Phoebe · 35mm</span>
+      <span class="photo-caption-right">The Police — Synchronicity LP</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 02 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Record<br><em>for Phoebe</em></h2>
+    <div class="symbol-quote">
+      <p>"It broke into about fifty pieces. It was in a big envelope and all, but it broke anyway. I damn near cried, it made me feel so terrible..."</p>
+      <cite>— Page 107</cite>
+    </div>
+    <p class="symbol-analysis">It's not really about the record itself. It's about Holden's fear that everything good and pure will get destroyed—just like he's been destroyed. He loves Phoebe so much and wants to protect her, but deep down he knows he can't stop the world from hurting her. The broken record shows how powerless he feels about that.</p>
+  </div>
+</section>
+
+<!-- FULL WIDTH PHOTO BREAK -->
+<div class="photo-break">
+  <img src="photos/red-hat-portrait.png" alt="Red Hat">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-text">
+    <blockquote>
+      <p>"I looked good in it that way. I really did."</p>
+    </blockquote>
+  </div>
+</div>
+
+<!-- 3. READING -->
+<section class="symbol-section" id="section-4">
+  <div class="symbol-photo">
+    <div class="photo-number">03</div>
+    <img src="photos/Reading_instead_of_socializing.jpg" alt="Reading">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Reading Instead of Socializing · 35mm</span>
+      <span class="photo-caption-right">Jurassic Park, Michael Crichton</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 03 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Reading Instead<br><em>of Socializing</em></h2>
+    <div class="symbol-quote">
+      <p>"What really knocks me out is a book that, when you're all done reading it, you wish the author that wrote it was a terrific friend of yours and you could call him up on the phone whenever you felt like it."</p>
+      <cite>— Page 13</cite>
+    </div>
+    <p class="symbol-analysis">This shows how lonely and isolated Holden really is. He'd rather connect with a book than with a real person because books won't let him down the way people do. He can close a book whenever he wants, but you can't do that with relationships. Real relationships are too complicated and messy, so he just stays alone with his books.</p>
+  </div>
+</section>
+
+<!-- 4. ALLIE -->
+<section class="symbol-section" id="section-5">
+  <div class="symbol-photo">
+    <div class="photo-number">04</div>
+    <img src="photos/Allie_Innocence.jpg" alt="Allie / Innocence">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Allie &amp; Innocence · 35mm</span>
+      <span class="photo-caption-right">Figure skates, Ottawa</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 04 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Allie &<br><em>Innocence</em></h2>
+    <div class="symbol-quote">
+      <p>"I keep picturing all these little kids playing some game in this big field of rye... I have to come out from somewhere and catch them."</p>
+      <cite>— Page 121</cite>
+    </div>
+    <p class="symbol-analysis">The "catcher in the rye" thing is basically Holden trying to fix what happened with Allie. He wants to be the person who catches kids before they fall off a cliff—before they grow up and get hurt the way he did. He knows it's impossible, but he can't let go of it. Allie's death is the thing that broke him the most, and everything else comes from that.</p>
+  </div>
+</section>
+
+<!-- FULL WIDTH PHOTO BREAK 2 -->
+<div class="photo-break">
+  <img src="photos/School_rejection.jpg" alt="Pencey">
+  <div class="photo-break-overlay"></div>
+  <div class="photo-break-text">
+    <blockquote>
+      <p>"They don't do any damn more molding at Pencey than they do at any other school."</p>
+    </blockquote>
+  </div>
+</div>
+
+<!-- 5. GIVING MONEY -->
+<section class="symbol-section" id="section-6">
+  <div class="symbol-photo">
+    <div class="photo-number">05</div>
+    <img src="photos/Giving_money.jpg" alt="Giving Money">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Giving to the Nuns · 35mm</span>
+      <span class="photo-caption-right">Cash, unspecified</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 05 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Giving to<br><em>the Nuns</em></h2>
+    <div class="symbol-quote">
+      <p>"After they left, I started getting sorry that I'd only given them ten bucks for their collection."</p>
+      <cite>— Page 79</cite>
+    </div>
+    <p class="symbol-analysis">This is where you realize Holden's not just some heartless jerk. He actually cares about people and wants to help. His cynicism is just a wall he built because it's easier to hate everyone than to risk getting hurt. When he sees people doing something genuinely good, his guard comes down and he wants to help too. That regret about the money—that's his real self coming through.</p>
+  </div>
+</section>
+
+<!-- 6. CIGARETTES -->
+<section class="symbol-section" id="section-7">
+  <div class="symbol-photo">
+    <div class="photo-number">06</div>
+    <img src="photos/Cigarette.jpg" alt="Cigarettes">
+    <div class="photo-overlay"></div>
+    <span class="tag-of" style="display:none"></span>
+    <div class="photo-caption">
+      <span class="photo-caption-left">Smoking a Cigarette · 35mm</span>
+      <span class="photo-caption-right">Exterior, overcast</span>
+    </div>
+  </div>
+  <div class="symbol-content">
+    <div class="symbol-tag">Picture 06 <span class="tag-of">of 08</span></div>
+    <h2 class="symbol-title">Smoking a<br><em>Cigarette</em></h2>
+    <div class="symbol-quote">
+      <p>"I have no wind, if you want to know the truth. I'm quite a heavy smoker, for one thing—that is, I used to be."</p>
+      <cite>— Page 4</cite>
+    </div>
+    <p class="symbol-analysis">Smoking is Holden's way of coping. He uses it to manage all the emotional stuff he's dealing with and to make himself look more mature and in control. But it also shows how vulnerable he actually is. He's just a teenager trying to act like an adult, and cigarettes are one of the ways he does that. It's kind of sad because you can see how much he's struggling underneath.</p>
+  </div>
+</section>
+
+<!-- GRID -->
+<div class="grid-section" id="section-8">
+  <div class="grid-section-header" style="border-bottom:1px solid rgba(232,223,200,0.08);padding-bottom:3rem;">
+    <h2>All Eight Pictures</h2>
+    <p>Every photograph from Holden's world, printed and examined</p>
+  </div>
+  <div class="photo-grid">
+    <div class="grid-item" data-index="0">
+      <img src="photos/PHONIES.jpg" alt="Phonies">
+      <div class="grid-item-overlay"><h3>Phonies</h3><p>Picture 01</p></div>
+    </div>
+    <div class="grid-item" data-index="1">
+      <img src="photos/red-hat-portrait.png" alt="Red Hat">
+      <div class="grid-item-overlay"><h3>Red Hunting Hat</h3><p>Picture 07</p></div>
+    </div>
+    <div class="grid-item" data-index="2">
+      <img src="photos/RECORD_FOR__PHOEBE.jpg" alt="Record">
+      <div class="grid-item-overlay"><h3>Record for Phoebe</h3><p>Picture 02</p></div>
+    </div>
+    <div class="grid-item" data-index="3">
+      <img src="photos/Reading_instead_of_socializing.jpg" alt="Reading">
+      <div class="grid-item-overlay"><h3>Reading Instead of Socializing</h3><p>Picture 03</p></div>
+    </div>
+    <div class="grid-item" data-index="4">
+      <img src="photos/Allie_Innocence.jpg" alt="Allie">
+      <div class="grid-item-overlay"><h3>Allie & Innocence</h3><p>Picture 04</p></div>
+    </div>
+    <div class="grid-item" data-index="5">
+      <img src="photos/Giving_money.jpg" alt="Nuns">
+      <div class="grid-item-overlay"><h3>Giving to the Nuns</h3><p>Symbol V</p></div>
+    </div>
+    <div class="grid-item" data-index="6">
+      <img src="photos/Cigarette.jpg" alt="Cigarette">
+      <div class="grid-item-overlay"><h3>Smoking a Cigarette</h3><p>Picture 06</p></div>
+    </div>
+    <div class="grid-item" data-index="7">
+      <img src="photos/School_rejection.jpg" alt="Pencey">
+      <div class="grid-item-overlay"><h3>School Rejection</h3><p>Picture 08</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bg-text">Holden</div>
+  <p class="footer-title">J.D. Salinger · The Catcher in the Rye · 1951</p>
+  <p class="footer-quote">"Don't ever tell anybody anything. If you do, you start missing everybody."</p>
+  <div class="footer-hr"></div>
+  <p class="footer-credit">Eight pictures · A photography portfolio · J.D. Salinger</p>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕ Close</button>
+  <div class="lightbox-inner">
+    <img id="lightboxImg" src="" alt="">
+    <div class="lightbox-info">
+      <div class="lightbox-tag" id="lightboxTag"></div>
+      <div class="lightbox-title" id="lightboxTitle"></div>
+      <div class="lightbox-quote"><p id="lightboxQuote"></p></div>
+      <div class="lightbox-analysis" id="lightboxAnalysis"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// DATA
+const symbols = [
+  {
+    tag: 'Picture 01 of 08', title: 'Phonies', img: 'photos/PHONIES.jpg',
+    quote: '"There\'s a word I really hate. It\'s a phony. I could puke every time I hear it." — Page 9',
+    analysis: "Holden's constantly judging people for being phony, but he's doing the same thing himself. His obsession with phoniness comes from his own insecurity and fear of genuine connection."
+  },
+  {
+    tag: 'Picture 07 of 08', title: 'Red Hunting Hat', img: 'photos/red-hat-portrait.png',
+    quote: '"I looked good in it that way. I really did." — Page 12',
+    analysis: "The hat is kind of funny because Holden wants to stand out and be himself, but he also worries constantly about what people think of him. It's like his armor."
+  },
+  {
+    tag: 'Picture 02 of 08', title: 'Record for Phoebe', img: 'photos/RECORD_FOR__PHOEBE.jpg',
+    quote: '"It broke into about fifty pieces... I damn near cried, it made me feel so terrible..." — Page 107',
+    analysis: "It's about Holden's fear that everything good and pure will get destroyed. The broken record shows how powerless he feels about protecting innocence."
+  },
+  {
+    tag: 'Picture 03 of 08', title: 'Reading Instead of Socializing', img: 'photos/Reading_instead_of_socializing.jpg',
+    quote: '"What really knocks me out is a book that, when you\'re all done reading it, you wish the author was a terrific friend of yours." — Page 13',
+    analysis: "He'd rather connect with a book than with a real person because books won't let him down the way people do."
+  },
+  {
+    tag: 'Picture 04 of 08', title: 'Allie & Innocence', img: 'photos/Allie_Innocence.jpg',
+    quote: '"I keep picturing all these little kids playing... I have to come out from somewhere and catch them." — Page 121',
+    analysis: "Allie's death is the thing that broke him the most. Everything else comes from that unresolvable grief."
+  },
+  {
+    tag: 'Picture 05 of 08', title: 'Giving to the Nuns', img: 'photos/Giving_money.jpg',
+    quote: '"After they left, I started getting sorry that I\'d only given them ten bucks." — Page 79',
+    analysis: "This is where you realize Holden's not just some heartless jerk. His cynicism is just a wall he built because it's easier to hate everyone than to risk getting hurt."
+  },
+  {
+    tag: 'Picture 06 of 08', title: 'Smoking a Cigarette', img: 'photos/Cigarette.jpg',
+    quote: '"I have no wind, if you want to know the truth. I\'m quite a heavy smoker..." — Page 4',
+    analysis: "Smoking is Holden's way of coping—managing emotional pain while trying to look more mature and in control."
+  },
+  {
+    tag: 'Picture 08 of 08', title: 'School Rejection', img: 'photos/School_rejection.jpg',
+    quote: '"They don\'t do any damn more molding at Pencey than they do at any other school." — Page 2',
+    analysis: "Holden can't connect with school or authority because he sees through the BS. This moment sets everything off."
+  }
+];
+
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+(function animCursor() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animCursor);
+})();
+
+// CURSOR HOVER EFFECTS
+document.querySelectorAll('a, button, .grid-item, .symbol-section').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursor.style.width = '20px'; cursor.style.height = '20px';
+    ring.style.width = '60px'; ring.style.height = '60px';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursor.style.width = '12px'; cursor.style.height = '12px';
+    ring.style.width = '40px'; ring.style.height = '40px';
+  });
+});
+
+// PROGRESS BAR
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  progressBar.style.width = (scrollTop / docHeight * 100) + '%';
+});
+
+// SCROLL ANIMATIONS — SYMBOL SECTIONS
+const symbolSections = document.querySelectorAll('.symbol-section');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible-section'); }
+  });
+}, { threshold: 0.15 });
+symbolSections.forEach(s => observer.observe(s));
+
+// INTRO ANIMATION
+const introP = document.querySelector('.intro p');
+const introObs = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) introP.classList.add('visible');
+}, { threshold: 0.5 });
+introObs.observe(introP);
+
+// SECTION DOTS
+const sections = document.querySelectorAll('[id^="section-"]');
+const dots = document.querySelectorAll('.section-dot');
+const dotObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const idx = parseInt(e.target.id.split('-')[1]);
+      dots.forEach((d,i) => d.classList.toggle('active', i === idx));
+    }
+  });
+}, { threshold: 0.4 });
+sections.forEach(s => dotObs.observe(s));
+
+// LIGHTBOX
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxTag = document.getElementById('lightboxTag');
+const lightboxTitle = document.getElementById('lightboxTitle');
+const lightboxQuote = document.getElementById('lightboxQuote');
+const lightboxAnalysis = document.getElementById('lightboxAnalysis');
+
+document.querySelectorAll('.grid-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const idx = parseInt(item.dataset.index);
+    const d = symbols[idx];
+    lightboxImg.src = d.img;
+    lightboxTag.textContent = d.tag;
+    lightboxTitle.textContent = d.title;
+    lightboxQuote.textContent = d.quote;
+    lightboxAnalysis.textContent = d.analysis;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// PARALLAX on photo-break images
+const parallaxImgs = document.querySelectorAll('.photo-break img');
+window.addEventListener('scroll', () => {
+  parallaxImgs.forEach(img => {
+    const rect = img.parentElement.getBoundingClientRect();
+    const center = rect.top + rect.height / 2;
+    const offset = (center - window.innerHeight / 2) * 0.15;
+    img.style.transform = `translateY(${offset}px) scale(1.15)`;
+  });
+});
+</script>
+</body>
+</html>
